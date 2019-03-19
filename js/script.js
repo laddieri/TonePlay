@@ -9,29 +9,14 @@ document.documentElement.addEventListener(
 
 var box = document.querySelector(".flashbox");
 
-var beatcount =0;
+var beatcount =1;
 var barcount=1;
 var player = new Tone.Player("./sounds/clap.wav").toMaster();
-var ritardandoTrue=false;
+var ritardandoTrue=true;
+var barsbefore=2;
 
 function triggerSound(time){
 	player.start()
-  beatcount+=1;
-  console.log(Tone.Transport.bpm.value)
-  console.log(ritardandoTrue);
-
-  if (ritardandoTrue){
-    if (barcount==3 ){
-      Tone.Transport.bpm.value = ritardando(beatcount);
-    }
-    if(barcount==4 && beatcount==1){
-      Tone.Transport.bpm.value = ritardando(5);
-    }
-    if (beatcount==4){
-      barcount+=1;
-      beatcount=0;
-    }
-  }
 
 }
 
@@ -42,8 +27,25 @@ function ritardando(x){
 
 Tone.Transport.schedule(function(time){
   triggerSound(time)
+  console.log(Tone.Transport.bpm.value)
+  console.log(ritardandoTrue);
+
+  if (ritardandoTrue){
+    if (barcount==barsbefore+1 ){
+      Tone.Transport.bpm.value = ritardando(beatcount);
+    }
+    if(barcount==4 && beatcount==1){
+      Tone.Transport.bpm.value = ritardando(5);
+    }
+    if (beatcount==4){
+      barcount+=1;
+      beatcount=0;
+    }
+    beatcount+=1;
+  }
   Tone.Draw.schedule(function(){
       document.querySelector('tone-slider').value=Tone.Transport.bpm.value;
+      // document.querySelector('span').textContent = beatcount;
   })
 }, 0)
 Tone.Transport.loop = true;
