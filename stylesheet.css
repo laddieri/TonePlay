@@ -22,3 +22,8 @@ body {
   background: blue;
   position: absolute;
 }
+
+.p5Canvas{
+  border: 1px solid black;
+  padding: 0px;
+}
